@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panime Hub - Premium Version</title>
+    <style>
+        /* CSS PREMIUM DARK THEME - PANIME STYLE */
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #080c10;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px;
+        }
+
+        /* HEADER UTAMA */
+        .app-header {
+            text-align: center;
+            color: #14b8a6;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            padding: 15px 0 5px 0;
+            margin: 0;
+        }
+
+        /* CONTAINER HALAMAN */
+        .page {
+            display: none;
+            padding: 0 16px;
+        }
+        .page.active {
+            display: block;
+        }
+
+        /* ================= BERANDA STYLE ================= */
+        .profile-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            margin-bottom: 12px;
+        }
+        .profile-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: white;
+        }
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .username-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .username {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .uid {
+            color: #14b8a6;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .tier-tag {
+            background: #f97316;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            align-self: flex-start;
+            letter-spacing: 0.5px;
+        }
+        .profile-actions {
+            display: flex;
+            gap: 16px;
+        }
+        .action-icon {
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        /* CARD PROGRESS BAR DI BERANDA (TANPA STATS LAGI) */
+        .rank-stats-card {
+            background-color: #111827;
+            border-radius: 14px;
+            padding: 16px;
+            border: 1px solid #1f2937;
+            cursor: pointer;
+        }
+        .rank-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+        .rank-title { font-weight: 600; color: #d1d5db; }
+        .progress-bar-bg {
+            background-color: #1f2937;
+            height: 6px;
+            border-radius: 10px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #06b6d4, #6366f1);
+            height: 100%;
+            width: 5%;
+            border-radius: 10px;
+        }
+
+        /* ACCENT PREMIUM BANNER */
+        .premium-box {
+            background: linear-gradient(90deg, #1e1b4b, #311042);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
+        .premium-text h4 { margin: 0; font-size: 0.85rem; color: #ffffff; }
+        .premium-text p { margin: 2px 0 0 0; font-size: 0.7rem; color: #a78bfa; }
+        .premium-btn {
+            background-color: #14b8a6; color: #000000; border: none;
+            padding: 6px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
+        }
+
+        /* SECTION HEADERS & SCROLL */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; margin-bottom: 10px; }
+        .section-title { font-size: 0.95rem; font-weight: 700; }
+        .see-all { color: #14b8a6; font-size: 0.75rem; text-decoration: none; }
+        .scroll-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
+        .scroll-row::-webkit-scrollbar { display: none; }
+        
+        .anime-card-h { min-width: 140px; width: 140px; background-color: #111827; border-radius: 8px; overflow: hidden; border: 1px solid #1f2937; }
+        .thumb-h { height: 80px; background-color: #1f2937; position: relative; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #4b5563; }
+        .ep-badge { position: absolute; bottom: 4px; left: 4px; background-color: rgba(0,0,0,0.75); font-size: 0.65rem; padding: 2px 5px; border-radius: 4px; }
+        .info-h { padding: 6px 8px; }
+        .title-h { font-size: 0.75rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .meta-h { font-size: 0.65rem; color: #9ca3af; margin-top: 2px; }
+
+        /* GRID ANIME */
+        .anime-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .anime-card-v { background-color: #111827; border-radius: 8px; overflow: hidden; border: 1px solid #1f2937; display: flex; flex-direction: column; }
+        .thumb-v { height: 130px; background-color: #1f2937; position: relative; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #4b5563; }
+        .new-badge { position: absolute; top: 4px; left: 4px; color: #22d3ee; border: 1px solid #22d3ee; font-size: 0.6rem; font-weight: bold; padding: 1px 4px; border-radius: 4px; }
+        .rating-badge { position: absolute; top: 4px; right: 4px; background-color: rgba(0,0,0,0.5); color: #fbbf24; font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; }
+        .info-v { padding: 6px 8px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .title-v { font-size: 0.75rem; font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.2; }
+        .meta-v { font-size: 0.65rem; color: #9ca3af; margin-top: 4px; }
+
+
+        /* ======================================================== */
+        /* ================== TAB HALAMAN PROFIL ================== */
+        /* ======================================================== */
+        .profile-page-wrapper {
+            text-align: center;
+            padding-top: 20px;
+        }
+        .big-avatar-frame {
+            position: relative;
+            width: 84px;
+            height: 84px;
+            margin: 0 auto;
+        }
+        .big-avatar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            border: 2px solid #1f2937;
+        }
+        .camera-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #1f2937;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            border: 1px solid #374151;
+        }
+        .p-username-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 14px;
+        }
+        .p-username { font-size: 1.25rem; font-weight: 700; }
+        .p-uid { color: #94a3b8; font-size: 0.85rem; background-color: #111827; padding: 2px 6px; border-radius: 6px; }
+        
+        .p-badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .p-tag-role { background-color: #1e1b4b; color: #a78bfa; font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+        .p-tag-level { background-color: #22c55e; color: white; font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+
+        /* GRID STATISTIK PROFIL (SAMA SEPERTI DI VIDEO REFERENSI) */
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background-color: #111827;
+            border-radius: 12px;
+            padding: 14px 8px;
+            margin-top: 24px;
+            border: 1px solid #1f2937;
+        }
+        .p-stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            border-right: 1px solid #1f2937;
+        }
+        .p-stat-box:last-child { border-right: none; }
+        .p-stat-value { font-size: 1rem; font-weight: 700; color: #ffffff; }
+        .p-stat-label { font-size: 0.65rem; color: #9ca3af; text-align: center; line-height: 1.2; }
+
+        /* TABS SUB-MENU PROFIL */
+        .profile-sub-tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            border-bottom: 1px solid #1f2937;
+            padding-bottom: 8px;
+        }
+        .sub-tab-item { font-size: 0.85rem; color: #6b7280; font-weight: 600; cursor: pointer; }
+        .sub-tab-item.active { color: #ffffff; border-bottom: 2px solid #14b8a6; padding-bottom: 6px; }
+
+        .empty-history-notice {
+            margin-top: 30px;
+            color: #4b5563;
+            font-size: 0.8rem;
+        }
+
+
+        /* ================= MODAL LEVEL POPUP ================= */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.75); z-index: 1000; justify-content: center; align-items: center; padding: 24px;
+        }
+        .modal-overlay.show { display: flex; }
+        .level-modal {
+            background-color: #111622; border: 1px solid #1e2538; border-radius: 16px;
+            width: 100%; max-width: 340px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            animation: fadeIn 0.2s ease-out;
+        }
+        .level-modal-header { text-align: center; margin-bottom: 18px; }
+        .level-modal-title { font-size: 1.1rem; font-weight: 700; color: #ffffff; margin: 0; }
+        .level-modal-subtitle { font-size: 0.8rem; color: #94a3b8; margin: 4px 0 0 0; }
+        .tier-list { display: flex; flex-direction: column; gap: 12px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
+        .tier-list::-webkit-scrollbar { width: 4px; }
+        .tier-list::-webkit-scrollbar-thumb { background-color: #1e2937; border-radius: 4px; }
+        .tier-item { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
+        .tier-info-box { display: flex; align-items: center; gap: 10px; }
+        .tier-icon { font-size: 1.1rem; }
+        .tier-name-group { display: flex; flex-direction: column; }
+        .tier-name { font-size: 0.85rem; font-weight: 600; color: #e2e8f0; }
+        .tier-range { font-size: 0.7rem; color: #64748b; }
+        .tier-status { font-size: 0.95rem; }
+        .status-current { color: #f97316; }
+        .status-locked { color: #475569; }
+        .current-tier-progress-container { width: 100%; margin-top: 4px; }
+        .current-tier-bar { background-color: #1e2937; height: 4px; border-radius: 4px; width: 80px; overflow: hidden; }
+        .current-tier-fill { background-color: #f97316; height: 100%; width: 5%; }
+        .current-tier-percent { font-size: 0.65rem; color: #94a3b8; margin-top: 2px; }
+        .level-modal-footer { border-top: 1px solid #1e2538; margin-top: 16px; padding-top: 12px; display: flex; justify-content: center; gap: 12px; font-size: 0.75rem; color: #64748b; font-weight: 500; }
+
+
+        /* BOTTOM NAV BAR BAWAH */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background-color: #0e131f; display: flex; justify-content: space-around;
+            padding: 8px 0; border-top: 1px solid #1e2538; z-index: 999;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            color: #64748b; font-size: 0.65rem; cursor: pointer; width: 25%; gap: 2px;
+        }
+        .nav-item.active { color: #14b8a6; }
+        .nav-icon { font-size: 1.2rem; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="app-header">PANIME</h1>
+
+    <!-- ==================== TAB 1: BERANDA ==================== -->
+    <div id="page-home" class="page active">
+        
+        <div class="profile-container">
+            <div class="profile-left">
+                <div class="avatar">P</div>
+                <div class="user-details">
+                    <div class="username-row">
+                        <span class="username">Panime</span>
+                        <span class="uid">#1</span>
+                    </div>
+                    <div class="tier-tag">Starter Tier</div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <span class="action-icon">🔔</span>
+                <span class="action-icon">🔍</span>
+            </div>
+        </div>
+
+        <!-- PROGRESS BAR LEVEL (BERSIH TANPA DATA MENIT TONTON DI LUAR) -->
+        <div class="rank-stats-card" onclick="bukaModalLevel()">
+            <div class="rank-header">
+                <span class="rank-title">Rank Level 1</span>
+                <span class="rank-target">0% Menuju Bronze Tier</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <!-- Premium Banner -->
+        <div class="premium-box">
+            <div class="premium-text">
+                <h4>Akses Premium Panime</h4>
+                <p>Nonton lancar tanpa hambatan iklan</p>
+            </div>
+            <button class="premium-btn">Langganan</button>
+        </div>
+
+        <div class="section-header">
+            <span class="section-title">Melanjutkan Tontonan</span>
+            <a href="#" class="see-all">Semua &gt;</a>
+        </div>
+        <div class="scroll-row">
+            <div class="anime-card-h">
+                <div class="thumb-h">Class 2<span class="ep-badge">Eps 6</span></div>
+                <div class="info-h">
+                    <div class="title-h">Class de 2-banme ni Kawaii...</div>
+                    <div class="meta-h">⏱️ 20:24 / 23:42</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 4: HALAMAN PROFIL MANDIRI ==================== -->
+    <div id="page-profil" class="page">
+        <div class="profile-page-wrapper">
+            
+            <div class="big-avatar-frame">
+                <div class="big-avatar">P</div>
+                <div class="camera-badge">📷</div>
+            </div>
+
+            <div class="p-username-row">
+                <span class="p-username">Panime</span>
+                <span class="p-uid">#1</span>
+            </div>
+
+            <div class="p-badge-container">
+                <span class="p-tag-role">🛡️ Pemula</span>
+                <span class="p-tag-level" onclick="bukaModalLevel()" style="cursor:pointer;">Lvl. 1</span>
+            </div>
+
+            <!-- SIMPAN DATA STATISTIK DI DALAM PROFIL SESUAI VIDEO REFERENSI -->
+            <div class="profile-stats-grid">
+                <div class="p-stat-box">
+                    <span class="p-stat-value">0</span>
+                    <span class="p-stat-label">bulan<br>bergabung</span>
+                </div>
+                <div class="p-stat-box">
+                    <span class="p-stat-value">0</span>
+                    <span class="p-stat-label">jumlah<br>komentar</span>
+                </div>
+                <div class="p-stat-box">
+                    <span class="p-stat-value">0</span>
+                    <span class="p-stat-label">jumlah<br>riwayat</span>
+                </div>
+                <div class="p-stat-box">
+                    <span class="p-stat-value">0</span>
+                    <span class="p-stat-label">menit<br>tontonan</span>
+                </div>
+            </div>
+
+            <!-- Sub Menu Profil -->
+            <div class="profile-sub-tabs">
+                <div class="sub-tab-item active">Comments</div>
+                <div class="sub-tab-item">Favorite</div>
+                <div class="sub-tab-item">History</div>
+            </div>
+
+            <div class="empty-history-notice">Belum ada aktivitas tontonan.</div>
+
+        </div>
+    </div>
+
+    <!-- TAB DUMMY LAIN -->
+    <div id="page-jadwal" class="page"><div style="padding:30px 0; text-align:center; color:#64748b;">📅 Jadwal Tayang Anime</div></div>
+    <div id="page-ditandai" class="page"><div style="padding:30px 0; text-align:center; color:#64748b;">📥 Anime Ditandai</div></div>
+
+
+    <!-- ==================== POPUP MODAL PROGRESS LEVEL ==================== -->
+    <div id="modalLevelProgress" class="modal-overlay" onclick="tutupModalLevel(event)">
+        <div class="level-modal" onclick="event.stopPropagation()">
+            <div class="level-modal-header">
+                <h3 class="level-modal-title">Level Progress</h3>
+                <p class="level-modal-subtitle">Level 1 • Stone</p>
+            </div>
+            <div class="tier-list">
+                <div class="tier-item">
+                    <div class="tier-info-box">
+                        <span class="tier-icon">⚫</span>
+                        <div class="tier-name-group">
+                            <span class="tier-name">Stone</span>
+                            <span class="tier-range">Level 0 - 10</span>
+                            <div class="current-tier-progress-container">
+                                <div class="current-tier-bar"><div class="current-tier-fill"></div></div>
+                                <div class="current-tier-percent">0% • Menuju Bronze</div>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="tier-status status-current">🔸</span>
+                </div>
+                <div class="tier-item"><div class="tier-info-box"><span class="tier-icon">🟫</span><div class="tier-name-group"><span class="tier-name">Bronze</span><span class="tier-range">Level 11 - 24</span></div></div><span class="tier-status status-locked">⏳</span></div>
+                <div class="tier-item"><div class="tier-info-box"><span class="tier-icon">⬜</span><div class="tier-name-group"><span class="tier-name">Silver</span><span class="tier-range">Level 25 - 49</span></div></div><span class="tier-status status-locked">⏳</span></div>
+                <div class="tier-item"><div class="tier-info-box"><span class="tier-icon">🟨</span><div class="tier-name-group"><span class="tier-name">Gold</span><span class="tier-range">Level 50 - 99</span></div></div><span class="tier-status status-locked">⏳</span></div>
+            </div>
+            <div class="level-modal-footer"><span>EXP: 0</span><span>|</span><span>Waktu: 0j 0m</span></div>
+        </div>
+    </div>
+
+
+    <!-- NAVIGATION BAR BAWAH -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="gantiTab('page-home', this)">
+            <div class="nav-icon">🏠</div>
+            <div>Beranda</div>
+        </div>
+        <div class="nav-item" onclick="gantiTab('page-jadwal', this)">
+            <div class="nav-icon">📅</div>
+            <div>Jadwal</div>
+        </div>
+        <div class="nav-item" onclick="gantiTab('page-ditandai', this)">
+            <div class="nav-icon">📥</div>
+            <div>Ditandai</div>
+        </div>
+        <div class="nav-item" onclick="gantiTab('page-profil', this)">
+            <div class="nav-icon">👤</div>
+            <div>Profil</div>
+        </div>
+    </div>
+
+    <script>
+        function gantiTab(pageId, element) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.remove('active'));
+            
+            const target = document.getElementById(pageId);
+            if(target) target.classList.add('active');
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function bukaModalLevel() { document.getElementById('modalLevelProgress').classList.add('show'); }
+        function tutupModalLevel(event) { document.getElementById('modalLevelProgress').classList.remove('show'); }
+    </script>
+</body>
+</html>
